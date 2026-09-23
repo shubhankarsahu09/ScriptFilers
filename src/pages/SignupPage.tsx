@@ -1,7 +1,8 @@
 import { useState, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Eye, EyeOff, Loader2 } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 
 /* ─── Password strength logic ─── */
 function getPasswordStrength(pw: string): number {
@@ -110,17 +111,40 @@ export default function SignupPage() {
   const [agreedTerms, setAgreedTerms] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const [error, setError] = useState('')
+
   const strength = getPasswordStrength(password)
   const canSubmit = name.trim() && email.trim() && password.trim() && agreedTerms && !isSubmitting
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault()
     if (!canSubmit) return
+    setError('')
     setIsSubmitting(true)
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1800))
+    
+    const { error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: name,
+        }
+      }
+    })
+
+    setIsSubmitting(false)
+
+    if (signUpError) {
+      setError(signUpError.message)
+      return
+    }
+
     navigate('/')
-  }, [canSubmit, navigate])
+  }, [canSubmit, email, password, name, navigate])
+
+  const handleOAuth = (provider: 'google' | 'github') => {
+    supabase.auth.signInWithOAuth({ provider })
+  }
 
   return (
     <div className="min-h-screen bg-bg text-text-primary grid grid-cols-1 lg:grid-cols-2">
@@ -156,13 +180,36 @@ export default function SignupPage() {
             </p>
           </motion.div>
 
+          {/* Error message */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="mb-4 px-4 py-3 rounded-[8px] bg-[#E5484D]/10 border border-[#E5484D]/20 text-sm text-[#E5484D]/80"
+              >
+                {error}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Social auth */}
           <motion.div variants={fieldVariant} className="flex flex-col gap-3 mb-6">
-            <button className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200">
+            <button 
+              onClick={() => handleOAuth('google')}
+              type="button"
+              className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200"
+            >
               <GoogleIcon />
               Continue with Google
             </button>
-            <button className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200">
+            <button 
+              onClick={() => handleOAuth('github')}
+              type="button"
+              className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200"
+            >
               <GitHubIcon />
               Continue with GitHub
             </button>

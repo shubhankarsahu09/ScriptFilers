@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
+import { supabase } from '../lib/supabase'
 
 /* ─── Static IDE card for backdrop (reused brand element) ─── */
 const CODE_LINES = [
@@ -130,18 +131,24 @@ export default function LoginPage() {
     setError('')
     setIsSubmitting(true)
 
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1500))
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
-    // Simulate an error scenario for demo (remove in production)
-    if (password === 'wrong') {
-      setIsSubmitting(false)
-      setError('Invalid email or password. Please try again.')
+    setIsSubmitting(false)
+
+    if (signInError) {
+      setError(signInError.message)
       return
     }
 
     navigate('/')
-  }, [canSubmit, navigate, password])
+  }, [canSubmit, navigate, email, password])
+
+  const handleOAuth = (provider: 'google' | 'github') => {
+    supabase.auth.signInWithOAuth({ provider })
+  }
 
   return (
     <div className="min-h-screen bg-bg text-text-primary grid grid-cols-1 lg:grid-cols-2">
@@ -195,11 +202,19 @@ export default function LoginPage() {
 
             {/* Social auth */}
             <motion.div variants={fieldVariant} className="flex flex-col gap-3">
-              <button className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200">
+              <button 
+                onClick={() => handleOAuth('google')}
+                type="button"
+                className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200"
+              >
                 <GoogleIcon />
                 Continue with Google
               </button>
-              <button className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200">
+              <button 
+                onClick={() => handleOAuth('github')}
+                type="button"
+                className="flex items-center justify-center gap-3 w-full bg-surface border border-hairline rounded-full py-3 text-sm font-medium text-text-primary hover:border-white/20 hover:bg-surface-2 transition-all duration-200"
+              >
                 <GitHubIcon />
                 Continue with GitHub
               </button>
