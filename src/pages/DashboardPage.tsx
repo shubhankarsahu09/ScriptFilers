@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 import { Package, Download, Settings, History } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 
@@ -52,12 +53,12 @@ export default function DashboardPage() {
                 <p className="text-text-secondary max-w-sm mb-6">
                   You haven't purchased or downloaded any scripts from the marketplace yet.
                 </p>
-                <a 
-                  href="/"
+                <Link 
+                  to="/marketplace"
                   className="bg-accent text-black px-6 py-3 rounded-full text-sm font-semibold hover:bg-[#6AE08A] transition-colors"
                 >
                   Browse Marketplace
-                </a>
+                </Link>
               </div>
             </motion.div>
 
