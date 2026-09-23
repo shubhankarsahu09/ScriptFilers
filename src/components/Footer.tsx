@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 const FOOTER_LINKS = {
   Scripts: ['After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender', 'All Scripts'],
@@ -54,8 +55,8 @@ export default function Footer() {
           </motion.h2>
 
           <motion.div variants={itemVariant}>
-            <a
-              href="#scripts"
+            <Link
+              to="/marketplace"
               className="group inline-flex items-center gap-3 bg-accent text-black text-base font-medium rounded-full pl-6 pr-2 py-2.5 hover:brightness-108 active:scale-[0.97] transition-all duration-200"
             >
               <span className="relative overflow-hidden h-[20px]">
@@ -67,7 +68,7 @@ export default function Footer() {
               <span className="flex items-center justify-center w-8 h-8 rounded-full bg-black/20">
                 <ArrowRight size={14} className="text-black" />
               </span>
-            </a>
+            </Link>
           </motion.div>
         </motion.div>
       </section>

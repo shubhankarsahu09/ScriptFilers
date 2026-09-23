@@ -294,7 +294,7 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.55 }}
           className="flex flex-wrap items-center justify-center gap-4"
         >
-          <TextRollButton text="Browse Scripts" href="#scripts" />
+          <TextRollButton text="Browse Scripts" href="/marketplace" />
           <a
             href="#showcase"
             className="group flex items-center gap-3 border border-white/15 hover:border-white/30 rounded-full px-5 py-2.5 transition-all duration-250 text-text-primary"
