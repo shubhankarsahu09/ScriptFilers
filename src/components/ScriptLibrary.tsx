@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Star } from 'lucide-react'
-import { SCRIPTS, SOFTWARE_LABELS, SOFTWARE_COLORS, Script } from '../data'
-import { useAuth } from '../contexts/AuthContext'
+import { SCRIPTS, SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
+import type { Script } from '../data'
 import ScriptModal from './ScriptModal'
 
 const FILTERS = ['All', 'After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender'] as const

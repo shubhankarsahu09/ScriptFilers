@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Star, MessageCircle, Play } from 'lucide-react'
-import { Script, SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
+import { SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
+import type { Script } from '../data'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
