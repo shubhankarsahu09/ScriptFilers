@@ -5,7 +5,11 @@ import { ArrowRight, X, Menu, LogOut } from 'lucide-react'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 
-const NAV_LINKS = ['Scripts', 'Bundles', 'Docs']
+const NAV_LINKS = [
+  { label: 'Marketplace', path: '/marketplace' },
+  { label: 'Bundles', path: '/#bundles' },
+  { label: 'Docs', path: '/#docs' },
+]
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
@@ -64,11 +68,11 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-8">
             {NAV_LINKS.map((link) => (
               <a
-                key={link}
-                href={`#${link.toLowerCase()}`}
+                key={link.label}
+                href={link.path}
                 className="relative text-sm text-text-secondary hover:text-text-primary transition-colors duration-250 group"
               >
-                {link}
+                {link.label}
                 <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-accent rounded-full transition-all duration-250 group-hover:w-full" />
               </a>
             ))}
@@ -143,8 +147,8 @@ export default function Navbar() {
             <nav className="flex flex-col items-center gap-6">
               {NAV_LINKS.map((link, i) => (
                 <motion.a
-                  key={link}
-                  href={`#${link.toLowerCase()}`}
+                  key={link.label}
+                  href={link.path}
                   onClick={() => setMobileOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -155,7 +159,7 @@ export default function Navbar() {
                   }}
                   className="text-[32px] font-medium text-text-primary hover:text-accent transition-colors"
                 >
-                  {link}
+                  {link.label}
                 </motion.a>
               ))}
 

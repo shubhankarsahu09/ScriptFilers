@@ -23,7 +23,12 @@ const itemVariant = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as const } },
 }
 
-export default function ScriptLibrary() {
+interface ScriptLibraryProps {
+  limit?: number
+  hideViewMore?: boolean
+}
+
+export default function ScriptLibrary({ limit, hideViewMore }: ScriptLibraryProps = {}) {
   const [activeFilter, setActiveFilter] = useState<string>('All')
   const navigate = useNavigate()
   const { session } = useAuth()
@@ -36,7 +41,10 @@ export default function ScriptLibrary() {
     }
   }
   const filterKey = FILTER_MAP[activeFilter]
-  const filtered = filterKey ? SCRIPTS.filter((s) => s.software === filterKey) : SCRIPTS
+  let filtered = filterKey ? SCRIPTS.filter((s) => s.software === filterKey) : SCRIPTS
+  if (limit) {
+    filtered = filtered.slice(0, limit)
+  }
 
   return (
     <section id="scripts" className="bg-bg py-24">
@@ -172,18 +180,20 @@ export default function ScriptLibrary() {
         </motion.div>
 
         {/* View more */}
-        <div className="flex justify-center mt-12">
-          <Link
-            to="/signup"
-            className="group flex items-center gap-2 border border-hairline rounded-full px-6 py-3 text-sm text-text-secondary hover:text-text-primary hover:border-white/20 transition-all duration-250"
-          >
-            View full library (48 scripts)
-            <ArrowRight
-              size={14}
-              className="transition-transform duration-300 -rotate-45 group-hover:rotate-0"
-            />
-          </Link>
-        </div>
+        {!hideViewMore && (
+          <div className="flex justify-center mt-12">
+            <Link
+              to="/marketplace"
+              className="group flex items-center gap-2 border border-hairline rounded-full px-6 py-3 text-sm text-text-secondary hover:text-text-primary hover:border-white/20 transition-all duration-250"
+            >
+              View full marketplace ({SCRIPTS.length} scripts)
+              <ArrowRight
+                size={14}
+                className="transition-transform duration-300 -rotate-45 group-hover:rotate-0"
+              />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )

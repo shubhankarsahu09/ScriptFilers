@@ -15,7 +15,7 @@ export default function LandingPage() {
       <main>
         <Hero />
         <Comparison />
-        <ScriptLibrary />
+        <ScriptLibrary limit={6} />
         <HowItWorks />
         <Pricing />
         <Testimonials />
