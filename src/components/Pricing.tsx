@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
 const PLANS = [
   {
@@ -59,6 +61,17 @@ const itemVariant = {
 }
 
 export default function Pricing() {
+  const navigate = useNavigate()
+  const { session } = useAuth()
+
+  const handlePlanClick = () => {
+    if (!session) {
+      navigate('/signup')
+    } else {
+      navigate('/dashboard')
+    }
+  }
+
   return (
     <section id="pricing" className="bg-bg py-24">
       <div className="max-w-[1200px] mx-auto px-6">
@@ -132,6 +145,7 @@ export default function Pricing() {
               </ul>
 
               <button
+                onClick={handlePlanClick}
                 className={`w-full py-3 rounded-full font-medium text-sm transition-all duration-200 ${
                   plan.featured
                     ? 'bg-accent text-black hover:brightness-108 active:scale-[0.97]'
