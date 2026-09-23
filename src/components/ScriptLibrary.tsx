@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Star } from 'lucide-react'
 import { SCRIPTS, SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
@@ -160,8 +161,8 @@ export default function ScriptLibrary() {
 
         {/* View more */}
         <div className="flex justify-center mt-12">
-          <a
-            href="#"
+          <Link
+            to="/signup"
             className="group flex items-center gap-2 border border-hairline rounded-full px-6 py-3 text-sm text-text-secondary hover:text-text-primary hover:border-white/20 transition-all duration-250"
           >
             View full library (48 scripts)
@@ -169,7 +170,7 @@ export default function ScriptLibrary() {
               size={14}
               className="transition-transform duration-300 -rotate-45 group-hover:rotate-0"
             />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
