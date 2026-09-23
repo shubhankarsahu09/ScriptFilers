@@ -82,12 +82,6 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {session ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="text-sm font-medium text-text-primary hover:text-accent transition-colors duration-200 px-4 py-2"
-                >
-                  Dashboard
-                </Link>
                 <button
                   onClick={handleLogout}
                   className="flex items-center gap-2 bg-surface text-text-secondary text-sm font-medium rounded-full px-5 py-2.5 hover:text-text-primary hover:bg-surface-2 active:scale-[0.97] transition-all duration-200"
@@ -175,13 +169,6 @@ export default function Navbar() {
               >
                 {session ? (
                   <>
-                    <Link
-                      to="/dashboard"
-                      onClick={() => setMobileOpen(false)}
-                      className="text-lg text-text-primary hover:text-accent transition-colors"
-                    >
-                      Dashboard
-                    </Link>
                     <button
                       onClick={handleLogout}
                       className="flex items-center gap-2 bg-surface text-text-secondary text-base font-medium rounded-full px-8 py-3 mt-2"

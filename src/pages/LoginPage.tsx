@@ -167,7 +167,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (session) {
-      navigate('/dashboard')
+      navigate('/marketplace')
     }
   }, [session, navigate])
 
@@ -191,7 +191,7 @@ export default function LoginPage() {
       return
     }
 
-    navigate('/dashboard')
+    navigate('/marketplace')
   }, [canSubmit, navigate, email, password])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {

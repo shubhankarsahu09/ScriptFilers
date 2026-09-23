@@ -3,7 +3,6 @@ import { AuthProvider } from './contexts/AuthContext'
 import LandingPage from './pages/LandingPage'
 import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/LoginPage'
-import DashboardPage from './pages/DashboardPage'
 import MarketplacePage from './pages/MarketplacePage'
 import ProtectedRoute from './components/ProtectedRoute'
 
@@ -18,7 +17,6 @@ export default function App() {
           
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
-            <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/marketplace" element={<MarketplacePage />} />
           </Route>
         </Routes>
