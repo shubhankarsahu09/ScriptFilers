@@ -186,7 +186,7 @@ export default function LoginPage() {
     navigate('/')
   }, [canSubmit, navigate, email, password])
 
-  const handleOAuth = (provider: 'google' | 'github') => {
+  const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {
     supabase.auth.signInWithOAuth({ provider })
   }
 
