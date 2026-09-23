@@ -16,7 +16,7 @@ export default function ScriptModal({ script, isOpen, onClose }: ScriptModalProp
   const { session } = useAuth()
 
   // Replace with actual WhatsApp number
-  const WHATSAPP_NUMBER = '1234567890' 
+  const WHATSAPP_NUMBER = '8448130657' 
 
   if (!script) return null
 
