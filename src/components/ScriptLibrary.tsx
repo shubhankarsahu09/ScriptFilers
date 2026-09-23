@@ -2,8 +2,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ArrowRight, Star } from 'lucide-react'
-import { SCRIPTS, SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
+import { SCRIPTS, SOFTWARE_LABELS, SOFTWARE_COLORS, Script } from '../data'
 import { useAuth } from '../contexts/AuthContext'
+import ScriptModal from './ScriptModal'
 
 const FILTERS = ['All', 'After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender'] as const
 const FILTER_MAP: Record<string, string | null> = {
@@ -30,15 +31,10 @@ interface ScriptLibraryProps {
 
 export default function ScriptLibrary({ limit, hideViewMore }: ScriptLibraryProps = {}) {
   const [activeFilter, setActiveFilter] = useState<string>('All')
-  const navigate = useNavigate()
-  const { session } = useAuth()
-
-  const handleScriptClick = () => {
-    if (!session) {
-      navigate('/signup')
-    } else {
-      navigate('/dashboard')
-    }
+  const [selectedScript, setSelectedScript] = useState<Script | null>(null)
+  
+  const handleScriptClick = (script: Script) => {
+    setSelectedScript(script)
   }
   const filterKey = FILTER_MAP[activeFilter]
   let filtered = filterKey ? SCRIPTS.filter((s) => s.software === filterKey) : SCRIPTS
@@ -110,7 +106,7 @@ export default function ScriptLibrary({ limit, hideViewMore }: ScriptLibraryProp
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                onClick={handleScriptClick}
+                onClick={() => handleScriptClick(script)}
                 className="group cursor-pointer bg-surface border border-hairline rounded-[14px] overflow-hidden hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,0,0,0.4)] transition-all duration-200"
                 style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
               >
@@ -195,6 +191,12 @@ export default function ScriptLibrary({ limit, hideViewMore }: ScriptLibraryProp
           </div>
         )}
       </div>
+
+      <ScriptModal 
+        script={selectedScript} 
+        isOpen={!!selectedScript} 
+        onClose={() => setSelectedScript(null)} 
+      />
     </section>
   )
 }
