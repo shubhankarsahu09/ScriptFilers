@@ -183,7 +183,7 @@ export default function LoginPage() {
       return
     }
 
-    navigate('/')
+    navigate('/dashboard')
   }, [canSubmit, navigate, email, password])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {

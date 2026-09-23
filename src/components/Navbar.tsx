@@ -1,13 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowRight, X, Menu } from 'lucide-react'
+import { ArrowRight, X, Menu, LogOut } from 'lucide-react'
+import { useAuth } from '../contexts/AuthContext'
+import { supabase } from '../lib/supabase'
 
 const NAV_LINKS = ['Scripts', 'Bundles', 'Docs']
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
+  const { session } = useAuth()
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setMobileOpen(false)
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40)
@@ -68,22 +76,39 @@ export default function Navbar() {
 
           {/* Right side — desktop */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Log in — ghost */}
-            <Link
-              to="/login"
-              className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200 px-4 py-2"
-            >
-              Log in
-            </Link>
-
-            {/* Sign up — accent pill */}
-            <Link
-              to="/signup"
-              className="flex items-center gap-2 bg-accent text-black text-sm font-medium rounded-full px-5 py-2.5 hover:brightness-108 active:scale-[0.97] transition-all duration-200"
-            >
-              Sign up
-              <ArrowRight size={14} />
-            </Link>
+            {session ? (
+              <>
+                <Link
+                  to="/dashboard"
+                  className="text-sm font-medium text-text-primary hover:text-accent transition-colors duration-200 px-4 py-2"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center gap-2 bg-surface text-text-secondary text-sm font-medium rounded-full px-5 py-2.5 hover:text-text-primary hover:bg-surface-2 active:scale-[0.97] transition-all duration-200"
+                >
+                  <LogOut size={14} />
+                  Log out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/login"
+                  className="text-sm text-text-secondary hover:text-text-primary transition-colors duration-200 px-4 py-2"
+                >
+                  Log in
+                </Link>
+                <Link
+                  to="/signup"
+                  className="flex items-center gap-2 bg-accent text-black text-sm font-medium rounded-full px-5 py-2.5 hover:brightness-108 active:scale-[0.97] transition-all duration-200"
+                >
+                  Sign up
+                  <ArrowRight size={14} />
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile hamburger */}
@@ -144,21 +169,42 @@ export default function Navbar() {
                 }}
                 className="mt-4 flex flex-col items-center gap-4"
               >
-                <Link
-                  to="/login"
-                  onClick={() => setMobileOpen(false)}
-                  className="text-lg text-text-secondary hover:text-text-primary transition-colors"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-2 bg-accent text-black text-base font-medium rounded-full px-8 py-3"
-                >
-                  Sign up
-                  <ArrowRight size={16} />
-                </Link>
+                {session ? (
+                  <>
+                    <Link
+                      to="/dashboard"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-lg text-text-primary hover:text-accent transition-colors"
+                    >
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="flex items-center gap-2 bg-surface text-text-secondary text-base font-medium rounded-full px-8 py-3 mt-2"
+                    >
+                      <LogOut size={16} />
+                      Log out
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/login"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-lg text-text-secondary hover:text-text-primary transition-colors"
+                    >
+                      Log in
+                    </Link>
+                    <Link
+                      to="/signup"
+                      onClick={() => setMobileOpen(false)}
+                      className="flex items-center gap-2 bg-accent text-black text-base font-medium rounded-full px-8 py-3"
+                    >
+                      Sign up
+                      <ArrowRight size={16} />
+                    </Link>
+                  </>
+                )}
               </motion.div>
             </nav>
           </motion.div>

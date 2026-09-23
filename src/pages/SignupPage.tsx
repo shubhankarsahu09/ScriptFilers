@@ -179,7 +179,7 @@ export default function SignupPage() {
       return
     }
 
-    navigate('/')
+    navigate('/dashboard')
   }, [canSubmit, email, password, name, navigate])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {
