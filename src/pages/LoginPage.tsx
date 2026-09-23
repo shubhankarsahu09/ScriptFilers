@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../contexts/AuthContext'
 
 /* ─── Static IDE card for backdrop (reused brand element) ─── */
 const CODE_LINES = [
@@ -162,6 +163,13 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
+  const { session } = useAuth()
+
+  useEffect(() => {
+    if (session) {
+      navigate('/dashboard')
+    }
+  }, [session, navigate])
 
   const canSubmit = email.trim() && password.trim() && !isSubmitting
 

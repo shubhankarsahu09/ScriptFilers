@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import { useAuth } from '../contexts/AuthContext'
 
 /* ─── Password strength logic ─── */
 function getPasswordStrength(pw: string): number {
@@ -152,6 +153,13 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const [error, setError] = useState('')
+  const { session } = useAuth()
+
+  useEffect(() => {
+    if (session) {
+      navigate('/dashboard')
+    }
+  }, [session, navigate])
 
   const strength = getPasswordStrength(password)
   const canSubmit = name.trim() && email.trim() && password.trim() && agreedTerms && !isSubmitting
