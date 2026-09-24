@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const PLANS = [
   {
     name: 'Single Script',
-    planId: 'single',
+    path: '/marketplace?plan=single',
     price: '$18–$45',
     period: 'one script, lifetime updates',
     featured: false,
@@ -20,7 +20,7 @@ const PLANS = [
   },
   {
     name: 'Software Bundle',
-    planId: 'bundle',
+    path: '/bundle-inquiry?plan=bundle',
     price: '$129',
     originalPrice: '$248',
     period: 'all scripts for one app',
@@ -37,7 +37,7 @@ const PLANS = [
   },
   {
     name: 'Studio License',
-    planId: 'studio',
+    path: '/bundle-inquiry?plan=studio',
     price: '$399',
     period: 'all scripts, all apps, 5 seats',
     featured: false,
@@ -63,18 +63,6 @@ const itemVariant = {
 }
 
 export default function Pricing() {
-  const navigate = useNavigate()
-
-  const handlePlanClick = (planId: string) => {
-    if (planId === 'single') {
-      navigate('/marketplace?plan=single')
-    } else if (planId === 'bundle') {
-      navigate('/bundle-inquiry?plan=bundle')
-    } else if (planId === 'studio') {
-      navigate('/bundle-inquiry?plan=studio')
-    }
-  }
-
   return (
     <section id="pricing" className="bg-bg py-24">
       <div className="max-w-[1200px] mx-auto px-6">
@@ -147,16 +135,16 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <button
-                onClick={() => handlePlanClick(plan.planId)}
-                className={`w-full py-3 rounded-full font-medium text-sm transition-all duration-200 cursor-pointer ${
+              <Link
+                to={plan.path}
+                className={`w-full py-3.5 rounded-full font-medium text-sm transition-all duration-200 cursor-pointer flex items-center justify-center text-center ${
                   plan.featured
                     ? 'bg-accent text-black hover:brightness-108 active:scale-[0.97]'
                     : 'bg-white text-black hover:bg-white/90 active:scale-[0.97]'
                 }`}
               >
                 {plan.cta}
-              </button>
+              </Link>
             </motion.div>
           ))}
         </motion.div>

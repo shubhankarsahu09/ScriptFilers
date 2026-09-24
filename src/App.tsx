@@ -8,11 +8,11 @@ import MarketplacePage from './pages/MarketplacePage'
 import BundleInquiryPage from './pages/BundleInquiryPage'
 
 function ScrollToTop() {
-  const { pathname } = useLocation()
+  const { pathname, search } = useLocation()
 
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [pathname])
+    window.scrollTo({ top: 0, behavior: 'instant' })
+  }, [pathname, search])
 
   return null
 }
