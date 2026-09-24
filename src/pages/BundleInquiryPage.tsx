@@ -5,7 +5,7 @@ import { Check, MessageCircle, ArrowLeft, Layers, ShieldCheck, Sparkles, Send } 
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import { useAuth } from '../contexts/AuthContext'
-import { SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
+import { SOFTWARE_COLORS } from '../data'
 
 const WHATSAPP_NUMBER = '8448130657'
 

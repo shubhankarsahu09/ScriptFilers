@@ -6,7 +6,6 @@ import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/LoginPage'
 import MarketplacePage from './pages/MarketplacePage'
 import BundleInquiryPage from './pages/BundleInquiryPage'
-import ProtectedRoute from './components/ProtectedRoute'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -27,12 +26,8 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/login" element={<LoginPage />} />
-          
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/bundle-inquiry" element={<BundleInquiryPage />} />
-          </Route>
+          <Route path="/marketplace" element={<MarketplacePage />} />
+          <Route path="/bundle-inquiry" element={<BundleInquiryPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

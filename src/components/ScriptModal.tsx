@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Star, MessageCircle, Play } from 'lucide-react'
 import { SOFTWARE_LABELS, SOFTWARE_COLORS } from '../data'
 import type { Script } from '../data'
-import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 
 interface ScriptModalProps {
@@ -12,7 +11,6 @@ interface ScriptModalProps {
 }
 
 export default function ScriptModal({ script, isOpen, onClose }: ScriptModalProps) {
-  const navigate = useNavigate()
   const { session } = useAuth()
 
   // Replace with actual WhatsApp number
@@ -21,14 +19,9 @@ export default function ScriptModal({ script, isOpen, onClose }: ScriptModalProp
   if (!script) return null
 
   const handleGetScript = () => {
-    if (!session) {
-      onClose()
-      navigate('/signup')
-      return
-    }
-
-    // Redirect to WhatsApp with pre-filled message
-    const message = encodeURIComponent(`Hi! I am interested in getting the script: ${script.title}`)
+    const userName = session?.user?.user_metadata?.full_name
+    const nameNote = userName ? ` (Name: ${userName})` : ''
+    const message = encodeURIComponent(`Hi! I am interested in getting the script: ${script.title}${nameNote}`)
     window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${message}`, '_blank')
   }
 

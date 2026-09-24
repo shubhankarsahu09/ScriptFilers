@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion'
 import { Check } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
 
 const PLANS = [
   {
@@ -65,20 +64,14 @@ const itemVariant = {
 
 export default function Pricing() {
   const navigate = useNavigate()
-  const { session } = useAuth()
 
   const handlePlanClick = (planId: string) => {
-    let targetUrl = '/marketplace?plan=single'
-    if (planId === 'bundle') {
-      targetUrl = '/bundle-inquiry?plan=bundle'
+    if (planId === 'single') {
+      navigate('/marketplace?plan=single')
+    } else if (planId === 'bundle') {
+      navigate('/bundle-inquiry?plan=bundle')
     } else if (planId === 'studio') {
-      targetUrl = '/bundle-inquiry?plan=studio'
-    }
-
-    if (!session) {
-      navigate(`/signup?redirect=${encodeURIComponent(targetUrl)}`)
-    } else {
-      navigate(targetUrl)
+      navigate('/bundle-inquiry?plan=studio')
     }
   }
 
