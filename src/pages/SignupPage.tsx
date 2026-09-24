@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Sparkles, Eye, EyeOff, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -145,6 +145,9 @@ function TwitterIcon() {
 /* ─── Signup Page ─── */
 export default function SignupPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const redirectTarget = searchParams.get('redirect') || '/marketplace'
+
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -157,9 +160,9 @@ export default function SignupPage() {
 
   useEffect(() => {
     if (session) {
-      navigate('/marketplace')
+      navigate(redirectTarget)
     }
-  }, [session, navigate])
+  }, [session, navigate, redirectTarget])
 
   const strength = getPasswordStrength(password)
   const canSubmit = name.trim() && email.trim() && password.trim() && agreedTerms && !isSubmitting
@@ -187,8 +190,8 @@ export default function SignupPage() {
       return
     }
 
-    navigate('/marketplace')
-  }, [canSubmit, email, password, name, navigate])
+    navigate(redirectTarget)
+  }, [canSubmit, email, password, name, navigate, redirectTarget])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {
     supabase.auth.signInWithOAuth({ provider })
@@ -409,7 +412,10 @@ export default function SignupPage() {
           {/* Sign in link */}
           <motion.p variants={fieldVariant} className="mt-8 text-center text-sm text-text-secondary">
             Already have an account?{' '}
-            <Link to="/login" className="text-accent hover:underline">
+            <Link 
+              to={redirectTarget !== '/marketplace' ? `/login?redirect=${encodeURIComponent(redirectTarget)}` : '/login'} 
+              className="text-accent hover:underline"
+            >
               Sign in
             </Link>
           </motion.p>

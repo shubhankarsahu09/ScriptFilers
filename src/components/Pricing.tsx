@@ -6,6 +6,7 @@ import { useAuth } from '../contexts/AuthContext'
 const PLANS = [
   {
     name: 'Single Script',
+    planId: 'single',
     price: '$18–$45',
     period: 'one script, lifetime updates',
     featured: false,
@@ -20,6 +21,7 @@ const PLANS = [
   },
   {
     name: 'Software Bundle',
+    planId: 'bundle',
     price: '$129',
     originalPrice: '$248',
     period: 'all scripts for one app',
@@ -36,6 +38,7 @@ const PLANS = [
   },
   {
     name: 'Studio License',
+    planId: 'studio',
     price: '$399',
     period: 'all scripts, all apps, 5 seats',
     featured: false,
@@ -64,11 +67,18 @@ export default function Pricing() {
   const navigate = useNavigate()
   const { session } = useAuth()
 
-  const handlePlanClick = () => {
+  const handlePlanClick = (planId: string) => {
+    let targetUrl = '/marketplace?plan=single'
+    if (planId === 'bundle') {
+      targetUrl = '/bundle-inquiry?plan=bundle'
+    } else if (planId === 'studio') {
+      targetUrl = '/bundle-inquiry?plan=studio'
+    }
+
     if (!session) {
-      navigate('/signup')
+      navigate(`/signup?redirect=${encodeURIComponent(targetUrl)}`)
     } else {
-      navigate('/dashboard')
+      navigate(targetUrl)
     }
   }
 
@@ -145,8 +155,8 @@ export default function Pricing() {
               </ul>
 
               <button
-                onClick={handlePlanClick}
-                className={`w-full py-3 rounded-full font-medium text-sm transition-all duration-200 ${
+                onClick={() => handlePlanClick(plan.planId)}
+                className={`w-full py-3 rounded-full font-medium text-sm transition-all duration-200 cursor-pointer ${
                   plan.featured
                     ? 'bg-accent text-black hover:brightness-108 active:scale-[0.97]'
                     : 'bg-white text-black hover:bg-white/90 active:scale-[0.97]'

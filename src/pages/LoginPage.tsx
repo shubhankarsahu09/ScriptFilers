@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Eye, EyeOff, Loader2 } from 'lucide-react'
 import { supabase } from '../lib/supabase'
@@ -158,6 +158,9 @@ const fieldVariant = {
 /* ─── Login Page ─── */
 export default function LoginPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
+  const redirectTarget = searchParams.get('redirect') || '/marketplace'
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -167,9 +170,9 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (session) {
-      navigate('/marketplace')
+      navigate(redirectTarget)
     }
-  }, [session, navigate])
+  }, [session, navigate, redirectTarget])
 
   const canSubmit = email.trim() && password.trim() && !isSubmitting
 
@@ -191,8 +194,8 @@ export default function LoginPage() {
       return
     }
 
-    navigate('/marketplace')
-  }, [canSubmit, navigate, email, password])
+    navigate(redirectTarget)
+  }, [canSubmit, navigate, email, password, redirectTarget])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {
     supabase.auth.signInWithOAuth({ provider })
@@ -364,7 +367,10 @@ export default function LoginPage() {
             {/* Sign up link */}
             <motion.p variants={fieldVariant} className="mt-8 text-center text-sm text-text-secondary">
               Don't have an account?{' '}
-              <Link to="/signup" className="text-accent hover:underline">
+              <Link 
+                to={redirectTarget !== '/marketplace' ? `/signup?redirect=${encodeURIComponent(redirectTarget)}` : '/signup'} 
+                className="text-accent hover:underline"
+              >
                 Create one
               </Link>
             </motion.p>

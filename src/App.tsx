@@ -5,6 +5,7 @@ import LandingPage from './pages/LandingPage'
 import SignupPage from './pages/SignupPage'
 import LoginPage from './pages/LoginPage'
 import MarketplacePage from './pages/MarketplacePage'
+import BundleInquiryPage from './pages/BundleInquiryPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function ScrollToTop() {
@@ -30,6 +31,7 @@ export default function App() {
           {/* Protected Routes */}
           <Route element={<ProtectedRoute />}>
             <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/bundle-inquiry" element={<BundleInquiryPage />} />
           </Route>
         </Routes>
       </BrowserRouter>
