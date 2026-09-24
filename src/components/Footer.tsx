@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom'
 
 const FOOTER_LINKS = {
   Scripts: ['After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender', 'All Scripts'],
-  Company: ['About', 'Blog', 'Careers', 'Contact'],
+  Company: ['About', 'Contact'],
   Legal: ['Privacy Policy', 'Terms of Service', 'Refund Policy'],
 }
 
