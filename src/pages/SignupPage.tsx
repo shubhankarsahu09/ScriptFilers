@@ -190,10 +190,12 @@ export default function SignupPage() {
       return
     }
 
+    localStorage.setItem('has_account', 'true')
     navigate(redirectTarget)
   }, [canSubmit, email, password, name, navigate, redirectTarget])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {
+    localStorage.setItem('has_account', 'true')
     supabase.auth.signInWithOAuth({ provider })
   }
 
@@ -413,7 +415,7 @@ export default function SignupPage() {
           <motion.p variants={fieldVariant} className="mt-8 text-center text-sm text-text-secondary">
             Already have an account?{' '}
             <Link 
-              to={redirectTarget !== '/marketplace' ? `/login?redirect=${encodeURIComponent(redirectTarget)}` : '/login'} 
+              to={redirectTarget !== '/marketplace' ? `/login?existing=true&redirect=${encodeURIComponent(redirectTarget)}` : '/login?existing=true'} 
               className="text-accent hover:underline"
             >
               Sign in

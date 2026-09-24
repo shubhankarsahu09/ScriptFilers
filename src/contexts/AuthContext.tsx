@@ -26,6 +26,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session)
       setUser(session?.user ?? null)
+      if (session) {
+        localStorage.setItem('has_account', 'true')
+      }
       setLoading(false)
     })
 
@@ -33,6 +36,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session)
       setUser(session?.user ?? null)
+      if (session) {
+        localStorage.setItem('has_account', 'true')
+      }
       setLoading(false)
     })
 

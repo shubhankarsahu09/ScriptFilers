@@ -171,8 +171,23 @@ export default function LoginPage() {
   useEffect(() => {
     if (session) {
       navigate(redirectTarget)
+      return
     }
-  }, [session, navigate, redirectTarget])
+
+    // If someone visits login page without ever having signed in or signed up on this device,
+    // redirect them to sign up page
+    const hasAccount = localStorage.getItem('has_account') === 'true'
+    const isExplicitLogin = searchParams.get('existing') === 'true'
+
+    if (!hasAccount && !isExplicitLogin) {
+      const redirectQuery = redirectTarget !== '/marketplace'
+        ? `?redirect=${encodeURIComponent(redirectTarget)}`
+        : ''
+      navigate(`/signup${redirectQuery}`, { replace: true })
+    } else if (isExplicitLogin) {
+      localStorage.setItem('has_account', 'true')
+    }
+  }, [session, navigate, redirectTarget, searchParams])
 
   const canSubmit = email.trim() && password.trim() && !isSubmitting
 
@@ -194,10 +209,12 @@ export default function LoginPage() {
       return
     }
 
+    localStorage.setItem('has_account', 'true')
     navigate(redirectTarget)
   }, [canSubmit, navigate, email, password, redirectTarget])
 
   const handleOAuth = (provider: 'google' | 'github' | 'apple' | 'azure' | 'discord' | 'spotify' | 'twitter') => {
+    localStorage.setItem('has_account', 'true')
     supabase.auth.signInWithOAuth({ provider })
   }
 
