@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, Play } from 'lucide-react'
 
@@ -38,6 +39,27 @@ function WaveformSVG() {
 
 /* ─── Text Roll CTA ─── */
 function TextRollButton({ text, href }: { text: string; href: string }) {
+  const isInternal = href.startsWith('/')
+
+  if (isInternal) {
+    return (
+      <Link
+        to={href}
+        className="group inline-flex items-center gap-3 bg-accent text-black text-base font-medium rounded-full pl-6 pr-2 py-2 hover:brightness-108 active:scale-[0.97] transition-all duration-200"
+      >
+        <span className="relative overflow-hidden h-[20px]">
+          <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-1/2">
+            <span className="h-[20px] flex items-center">{text}</span>
+            <span className="h-[20px] flex items-center">{text}</span>
+          </span>
+        </span>
+        <span className="flex items-center justify-center w-8 h-8 rounded-full bg-black/20">
+          <ArrowRight size={14} className="text-black" />
+        </span>
+      </Link>
+    )
+  }
+
   return (
     <a
       href={href}

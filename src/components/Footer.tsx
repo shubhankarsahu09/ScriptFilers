@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 const FOOTER_LINKS = {
   Scripts: ['After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender', 'All Scripts'],
@@ -26,6 +26,17 @@ const itemVariant = {
 }
 
 export default function Footer() {
+  const location = useLocation()
+
+  const handleBrowseScripts = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname === '/marketplace') {
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
+
   return (
     <>
       {/* Final CTA */}
@@ -57,7 +68,8 @@ export default function Footer() {
           <motion.div variants={itemVariant}>
             <Link
               to="/marketplace"
-              className="group inline-flex items-center gap-3 bg-accent text-black text-base font-medium rounded-full pl-6 pr-2 py-2.5 hover:brightness-108 active:scale-[0.97] transition-all duration-200"
+              onClick={handleBrowseScripts}
+              className="group inline-flex items-center gap-3 bg-accent text-black text-base font-medium rounded-full pl-6 pr-2 py-2.5 hover:brightness-108 active:scale-[0.97] transition-all duration-200 cursor-pointer"
             >
               <span className="relative overflow-hidden h-[20px]">
                 <span className="flex flex-col transition-transform duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] group-hover:-translate-y-1/2">
@@ -84,12 +96,22 @@ export default function Footer() {
                 <ul className="space-y-2.5">
                   {links.map((link) => (
                     <li key={link}>
-                      <a
-                        href="#"
-                        className="text-sm text-text-tertiary hover:text-text-secondary transition-colors duration-200"
-                      >
-                        {link}
-                      </a>
+                      {link === 'All Scripts' ? (
+                        <Link
+                          to="/marketplace"
+                          onClick={handleBrowseScripts}
+                          className="text-sm text-text-tertiary hover:text-text-secondary transition-colors duration-200"
+                        >
+                          {link}
+                        </Link>
+                      ) : (
+                        <a
+                          href="#"
+                          className="text-sm text-text-tertiary hover:text-text-secondary transition-colors duration-200"
+                        >
+                          {link}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
