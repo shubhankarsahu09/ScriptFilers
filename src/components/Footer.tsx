@@ -5,8 +5,7 @@ import { Link, useLocation } from 'react-router-dom'
 const FOOTER_LINKS = {
   Scripts: ['After Effects', 'Premiere Pro', 'DaVinci Resolve', 'Blender', 'All Scripts'],
   Company: ['About', 'Blog', 'Careers', 'Contact'],
-  Resources: ['Documentation', 'Tutorials', 'Changelog', 'API Reference'],
-  Legal: ['Privacy Policy', 'Terms of Service', 'Refund Policy', 'License Agreement'],
+  Legal: ['Privacy Policy', 'Terms of Service', 'Refund Policy'],
 }
 
 const SOCIALS = [
@@ -89,7 +88,7 @@ export default function Footer() {
       <footer className="bg-bg border-t border-hairline">
         <div className="max-w-[1200px] mx-auto px-6 py-16">
           {/* Link grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-16">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-10 mb-16">
             {Object.entries(FOOTER_LINKS).map(([category, links]) => (
               <div key={category}>
                 <h4 className="text-sm font-semibold text-text-primary mb-4">{category}</h4>
