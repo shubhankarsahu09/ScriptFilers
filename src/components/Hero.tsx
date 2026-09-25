@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowRight, Play } from 'lucide-react'
@@ -240,26 +240,39 @@ const lineVariants = {
 }
 
 export default function Hero() {
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true
+      videoRef.current.muted = true
+      videoRef.current.play().catch(() => {})
+    }
+  }, [])
+
   return (
     <section id="hero" className="relative min-h-screen flex flex-col justify-center overflow-hidden pt-20 pb-16">
-      {/* Background treatments */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Grid lines */}
-        <div className="absolute inset-0 max-w-[1400px] mx-auto left-0 right-0">
-          {[20, 40, 60, 80].map((pct) => (
-            <div
-              key={pct}
-              className="absolute top-0 bottom-0 w-px bg-white/[0.03]"
-              style={{ left: `${pct}%` }}
-            />
-          ))}
-        </div>
-        {/* Radial glow */}
+      {/* Background Video */}
+      <div className="bg">
+        <video
+          ref={videoRef}
+          className="bg-video"
+          autoPlay
+          muted
+          loop
+          playsInline
+        >
+          <source
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260411_104032_69319010-2458-492b-b04d-b40a5dfa4482.mp4"
+            type="video/mp4"
+          />
+        </video>
+        {/* Clean bottom transition into page background without washing out video clarity */}
         <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] rounded-full opacity-[0.08]"
+          className="absolute inset-0 pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse at center, #7CF29C 0%, transparent 70%)',
-            filter: 'blur(90px)',
+            background:
+              'linear-gradient(180deg, rgba(0,0,0,0.2) 0%, transparent 35%, transparent 65%, rgba(10,10,11,0.8) 88%, #0A0A0B 100%)',
           }}
         />
       </div>
